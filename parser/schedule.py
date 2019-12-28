@@ -4,7 +4,7 @@ import requests
 class ScheduleParser():
     def parse(self, params: dict, do_req: bool = True, l: list = []) -> list:
         if do_req:
-            l = self.__get_data()
+            l = self.get_data()
         
         param_name = list(params.keys())[0]
         param_value = params[param_name]
@@ -40,12 +40,25 @@ class ScheduleParser():
             return self.parse(params, False, confs)
         return confs
 
-    def __get_data(self) -> list:
-        resp = requests.get(config.SCHEDULE_URL)
-        elements = []
-        for day in resp.json()['schedule']['conference']['days']:
-            for room in day['rooms']:
-                for conference in day['rooms'][room]:
-                    elements.append(conference)
-        return elements
+    def get_data(self) -> list:
+        try:
+            resp = requests.get(config.SCHEDULE_URL, timeout=5)
+            elements = []
+            for day in resp.json()['schedule']['conference']['days']:
+                for room in day['rooms']:
+                    for conference in day['rooms'][room]:
+                        elements.append(conference)
+
+            with open('data.json', 'w') as outfile:
+                json.dump(res, outfile, indent=4)
+            return elements
+        except:
+            with open('data.json') as json_file:
+                f = json.load(json_file)
+                elements = []
+                for day in f['schedule']['conference']['days']:
+                    for room in day['rooms']:
+                        for conference in day['rooms'][room]:
+                            elements.append(conference)
+                return elements
 
