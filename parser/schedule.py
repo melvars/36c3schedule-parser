@@ -15,13 +15,23 @@ class ScheduleParser():
         if param_name == 'speaker':
             for conference in l:
                 for person in conference['persons']:
-                    if person['public_name'].lower() == param_value.lower():
+                    if param_value.lower() in person['public_name'].lower():
                         confs.append(conference)
                         break
                     
         elif param_name == 'room':
             for conference in l:
-                if conference['room'].lower() == param_value.lower():
+                if param_value.lower() in conference['room'].lower():
+                    confs.append(conference)
+
+        elif param_name == 'time':
+            for conference in l:
+                if conference['start'].lower() == param_value.lower():
+                    confs.append(conference)
+
+        elif param_name == 'title':
+            for conference in l:
+                if param_value.lower() in conference['abstract'].lower():
                     confs.append(conference)
 
 
