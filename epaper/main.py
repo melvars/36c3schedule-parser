@@ -13,9 +13,9 @@ font_size = 12
 
 epd = epd2in13.EPD()
 epd.init(epd.FULL_UPDATE)
-epd.Clear(0xFF)
 
 while 1:
+    epd.Clear(0xFF)
     image = Image.new('1', (epd2in13.EPD_HEIGHT, epd2in13.EPD_WIDTH), 255)  # 255: clear the frame
     draw = ImageDraw.Draw(image)
     font = ImageFont.truetype('/usr/share/fonts/truetype/wqy/wqy-microhei.ttc', font_size)
